@@ -1,12 +1,21 @@
 import FreeSimpleGUI as sg
 import functions
 import time
+import os
+
+if not os.path.exists("todos.txt"):
+    with open("todos.txt") as file:
+        pass
+
 clock = sg.Text('', key='clock')
 label = sg.Text("Type in a todo")
 input_box = sg.InputText(tooltip="Enter a todo", key="todo")
-add_button = sg.Button("Add")
+add_button = sg.Button(image_source="add.png", size=2,
+                       mouseover_colors="LightBlue2",
+                       tooltip="Click to add a todo", key='Add')
 edit_button = sg.Button("Edit")
-complete_button = sg.Button("Complete")
+complete_button = sg.Button(image_source="complete.png", tooltip="Click to remove the finished todo",
+                            key="Complete")
 exit_button = sg.Button("Exit")
 list_box = sg.Listbox(values=functions.get_todos(), size=(45, 10), key='todos', enable_events=True)
 exit_text = sg.Text(key='exit_text', )
@@ -32,8 +41,8 @@ while True:
                 functions.write_todos(todos_arg=todos)
                 window['todos'].update(values=todos)
                 window['todo'].update(value='')
-            except values['todo'] == '':
-                sg.popup("Please select an item first!", font=("Helvetica", 20))
+            except values['todo'] == ' ':
+                sg.popup("Please type an item first!", font=("Helvetica", 20))
 
         case "Edit":
             try:
